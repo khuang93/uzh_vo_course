@@ -8,7 +8,7 @@ harris_kappa = 0.08;
 num_keypoints = 200;
 nonmaximum_supression_radius = 8;
 descriptor_radius = 9;
-match_lambda = 4;
+match_lambda = 2;%4
 
 img = imread('000000.png');
 
@@ -46,7 +46,7 @@ for i = 1:16
 end
 
 %% Part 4 - Match descriptors between first two images
-img_2 = imread('../data/000001.png');
+img_2 = imread('000001.png');
 harris_scores_2 = harris(img_2, harris_patch_size, harris_kappa);
 keypoints_2 = selectKeypoints(...
     harris_scores_2, num_keypoints, nonmaximum_supression_radius);
@@ -65,7 +65,7 @@ figure(5);
 img_indices = 0:199;
 clear prev_desc
 for i = img_indices
-    img = imread(sprintf('../data/%06d.png',i));
+    img = imread(sprintf('%06d.png',i));
     imshow(img); hold on;
     
     scores = harris(img, harris_patch_size, harris_kappa);
