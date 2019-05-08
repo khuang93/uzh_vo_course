@@ -10,7 +10,7 @@ nonmaximum_supression_radius = 8;
 descriptor_radius = 9;
 match_lambda = 4;
 
-img = imread('../data/000000.png');
+img = imread('000000.png');
 
 %% Part 1 - Calculate Harris scores
 
