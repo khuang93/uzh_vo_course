@@ -31,15 +31,29 @@ pt_1_im=project_w2c(pt_1,K,R,P1_t);
 pt_im_vec=zeros(length(pts),2);
 
 for i=1:length(pts)
-    pt=pts(i,:)'
-    pt_im=project_w2c(pt,K,R,P1_t)
+    pt=pts(i,:)';
+    pt_im=project_w2c(pt,K,R,P1_t);
     pt_im_vec(i,:)=pt_im;
 end
+
+%%
+%show
 imshow(im_gray);
 hold on
 scatter(pt_im_vec(:,1),pt_im_vec(:,2),5,'r');
 
+%%
+%Cube
+w=0.08;
+start=[0 0 0];
+tmp=triu(ones(4,3))';
+cube_pts=w*[0 0 0; 0 0 -1; 0 1 -1; 0 1 0; 1 0 0 ; 1 0 -1; 1 1 0; 1 1 -1 ];
+cube_pt_im_vec=zeros(length(cube_pts),2);
+for i=1:length(cube_pts)
+    pt=cube_pts(i,:)';
+    pt_im=project_w2c(pt,K,R,P1_t);
+    cube_pt_im_vec(i,:)=pt_im;
+end
 
-
-
+plot(cube_pt_im_vec(:,1),cube_pt_im_vec(:,2),'b');
 
