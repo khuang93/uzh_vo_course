@@ -6,4 +6,6 @@ D = load('D.txt');
 im_rgb=imread('data\images\img_0001.jpg');
 im_gray=rgb2gray(im_rgb);
 im_undist = uint8(undistort_img(im_gray,K,D));
+
+% im_undist = uint8(undistortImageVectorized(im_gray,K,D));
 imshow(im_undist);
