@@ -37,8 +37,27 @@ parfor (i=istart:1:iend)
 %             patch_R_all(k,:)=reshape(right_img_pad(i-patch_radius:i+patch_radius,max(1,right_j-d-patch_radius):max(1,right_j-d+patch_radius)),1,[]);
 %         end
         D=pdist2(patch_L,patch_R_all,'squaredeuclidean');
-        [~,minD_idx]=min(D);
-        disp_img_i(j)=max_disp-minD_idx+1;
+        [minD,minD_idx]=min(D);
+%         ambig_th=1.5*minD;
+%         if (minD_idx~=1 && minD_idx~=ld &&sum(D<ambig_th)<2 && minD~=0)
+        if (minD_idx~=1 && minD_idx~=ld&& minD~=0)
+            d_star = max_disp-minD_idx+1;
+            X=[minD_idx-1,minD_idx,minD_idx+1];
+            Y=D(X);
+            polynom=polyfit(X,Y,2);
+            spacing=0.1;
+           [~,d_ref_idx]=min(polyval(polynom,minD_idx-1:spacing:minD_idx+1)); 
+           d_ref=(d_ref_idx-1)*spacing+minD_idx-1;
+            disp_img_i(j)=max_disp-d_ref+1;
+        end
+        
+        
+        %apply ambigous match threshold %apply bound
+%         ambig_th=1.5*minD;
+%         if (minD_idx~=1 && minD_idx~=ld &&sum(D<ambig_th)<2 && minD~=0)
+%             disp_img_i(j)=max_disp-minD_idx+1;
+%         end   
+        
         
     end
     disp_img(i,:)=disp_img_i;

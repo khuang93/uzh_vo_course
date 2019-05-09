@@ -36,10 +36,10 @@ axis off;
 warning(['Visualizing disparity over sequence! This is optional and' ...
  ' could take a lot of time (100 stereo pairs)!']);
 figure(2);
-maxi = 99;
+maxi = 9;
 for i = 0:maxi
-    l = imresize(imread(sprintf('../data/left/%06d.png',i)), 0.5);
-    r = imresize(imread(sprintf('../data/right/%06d.png',i)), 0.5);
+    l = imresize(imread(sprintf("left/%06d.png",i)), 0.5);
+    r = imresize(imread(sprintf("right/%06d.png",i)), 0.5);
     disp_img_i = getDisparity(...
         l, r, patch_radius, min_disp, max_disp);
     imagesc(disp_img_i);
@@ -50,9 +50,10 @@ for i = 0:maxi
 end
 
 %% Part 3: Create point cloud for first pair
-
+tic;
 [p_C_points, intensities] = disparityToPointCloud(...
     disp_img, K, baseline, left_img);
+toc
 % From camera frame to world frame:
 p_F_points = [0 -1 0; 0 0 -1; 1 0 0]^-1 * p_C_points(:, 1:10:end);
 
@@ -78,13 +79,15 @@ all_points = [];
 all_intensities = [];
 
 % Shorten to get a point cloud faster.
-image_range = 0:99;
+image_range = 0:9;
 
 h = waitbar(0, 'Accumulating point clouds...');
 
 for i = image_range
-    l = imresize(imread(sprintf('../data/left/%06d.png',i)), 0.5);
-    r = imresize(imread(sprintf('../data/right/%06d.png',i)), 0.5);
+%     l = imresize(imread(sprintf('../data/left/%06d.png',i)), 0.5);
+%     r = imresize(imread(sprintf('../data/right/%06d.png',i)), 0.5);
+    l = imresize(imread(sprintf("left/%06d.png",i)), 0.5);
+    r = imresize(imread(sprintf("right/%06d.png",i)), 0.5);
     disp_img = getDisparity(...
         l, r, patch_radius, min_disp, max_disp);
     [p_C_points, intensities] = disparityToPointCloud(...
