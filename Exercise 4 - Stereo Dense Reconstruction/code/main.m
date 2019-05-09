@@ -31,14 +31,6 @@ imagesc(disp_img);
 axis equal;
 axis off;
 
-tic;
-disp_img = getDisparity2(...
-    left_img, right_img, patch_radius, min_disp, max_disp);
-toc
-figure(2);
-imagesc(disp_img);
-axis equal;
-axis off;
 
 %% Optional (only if fast enough): Disparity movie
 warning(['Visualizing disparity over sequence! This is optional and' ...
