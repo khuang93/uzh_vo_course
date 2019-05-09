@@ -17,7 +17,9 @@ disp_img=zeros(size(left_img));
 istart=patch_radius+1;
 iend=m-patch_radius;
 parfor (i=istart:1:iend)
-    patch_R_all_all=zeros(n-patch_radius*2+max_disp,(2*patch_radius+1)^2); %pre calc all patches in this line
+ %pre calc all patches in this line
+    patch_R_all_all=zeros(n-patch_radius*2+max_disp,(2*patch_radius+1)^2); 
+ 
     for j = patch_radius+1:n-patch_radius+max_disp
         patch_R_all_all(j,:)=...
             reshape(...
@@ -27,26 +29,30 @@ parfor (i=istart:1:iend)
     end
     disp_img_i=zeros(1,n);
     for j = patch_radius+1:n-patch_radius
-        patch_L=left_img(i-patch_radius:i+patch_radius,j-patch_radius:j+patch_radius);
+        patch_L=left_img(i-patch_radius:i+patch_radius,...
+            j-patch_radius:j+patch_radius);
         patch_L=single(reshape(patch_L,1,[]));
         patch_R_all=patch_R_all_all(j:j+ld-1,:);
 %         patch_R_all=zeros(ld,length(patch_L));
 %         for k=1:ld
 %             d=disp_space(k);
 %             right_j=j+max_disp;
-%             patch_R_all(k,:)=reshape(right_img_pad(i-patch_radius:i+patch_radius,max(1,right_j-d-patch_radius):max(1,right_j-d+patch_radius)),1,[]);
+%             patch_R_all(k,:)=reshape(...
+%               right_img_pad(i-patch_radius:i+patch_radius,...
+%               right_j-d-patch_radius:right_j-d+patch_radius),1,[]);
 %         end
         D=pdist2(patch_L,patch_R_all,'squaredeuclidean');
         [minD,minD_idx]=min(D);
-%         ambig_th=1.5*minD;
-%         if (minD_idx~=1 && minD_idx~=ld &&sum(D<ambig_th)<2 && minD~=0)
-        if (minD_idx~=1 && minD_idx~=ld&& minD~=0)
+        ambig_th=1.5*minD;
+        if (minD_idx~=1 && minD_idx~=ld &&sum(D<ambig_th)<2 && minD~=0)
+%         if (minD_idx~=1 && minD_idx~=ld&& minD~=0)
             d_star = max_disp-minD_idx+1;
             X=[minD_idx-1,minD_idx,minD_idx+1];
             Y=D(X);
             polynom=polyfit(X,Y,2);
-            spacing=0.1;
-           [~,d_ref_idx]=min(polyval(polynom,minD_idx-1:spacing:minD_idx+1)); 
+            spacing=0.01;
+           [~,d_ref_idx]=min(...
+               polyval(polynom,minD_idx-1:spacing:minD_idx+1)); 
            d_ref=(d_ref_idx-1)*spacing+minD_idx-1;
             disp_img_i(j)=max_disp-d_ref+1;
         end

@@ -79,7 +79,7 @@ all_points = [];
 all_intensities = [];
 
 % Shorten to get a point cloud faster.
-image_range = 0:9;
+image_range = 0:99;
 
 h = waitbar(0, 'Accumulating point clouds...');
 
