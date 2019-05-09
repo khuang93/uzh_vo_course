@@ -8,7 +8,7 @@ harris_kappa = 0.08;
 num_keypoints = 200;
 nonmaximum_supression_radius = 8;
 descriptor_radius = 9;
-match_lambda = 3;%4
+match_lambda = 8;%4
 
 img = imread('000000.png');
 

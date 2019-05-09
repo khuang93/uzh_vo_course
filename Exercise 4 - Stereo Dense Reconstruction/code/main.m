@@ -2,12 +2,12 @@ clear all;
 close all;
 
 % Scaling down by a factor of 2, otherwise too slow.
-left_img = imresize(imread('../data/left/000000.png'), 0.5);
-right_img = imresize(imread('../data/right/000000.png'), 0.5);
-K = load('../data/K.txt');
+left_img = imresize(imread('left\000000.png'), 0.5);
+right_img = imresize(imread('right\000000.png'), 0.5);
+K = load('data\K.txt');
 K(1:2, :) = K(1:2, :) / 2;
 
-poses = load('../data/poses.txt');
+poses = load('data\poses.txt');
 
 % Given by the KITTI dataset:
 baseline = 0.54;
@@ -27,6 +27,15 @@ disp_img = getDisparity(...
     left_img, right_img, patch_radius, min_disp, max_disp);
 toc
 figure(1);
+imagesc(disp_img);
+axis equal;
+axis off;
+
+tic;
+disp_img = getDisparity2(...
+    left_img, right_img, patch_radius, min_disp, max_disp);
+toc
+figure(2);
 imagesc(disp_img);
 axis equal;
 axis off;

@@ -9,7 +9,7 @@ function matches = matchDescriptors(...
 % be equal.
 [M,N]=size(database_descriptors);
 % [D,I]=pdist2(query_descriptors',database_descriptors','euclidean','smallest',1);
-[D,I]=pdist2(database_descriptors',query_descriptors','euclidean','smallest',1);
+[D,I]=pdist2(database_descriptors',query_descriptors',@SSD,'smallest',1);
 threshold=lambda*min(min(D));
 % matches=I;
 I(find(D>threshold))=0;
@@ -20,3 +20,10 @@ matches=I;
 %     end
 % end
 
+function D2 = SSD(ZI,ZJ)
+% calculation of distance SSD
+[m,p]=size(ZJ);
+diffs=ZI-ZJ;
+
+sq_diffs=diffs.^2;
+D2=sum(sq_diffs,2);
