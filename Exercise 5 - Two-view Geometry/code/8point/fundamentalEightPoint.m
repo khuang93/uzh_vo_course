@@ -13,3 +13,17 @@ function F = fundamentalEightPoint(p1,p2)
 %
 % Output:
 %  - F(3,3) : fundamental matrix
+[~,N]=size(p1);
+Q=zeros(N,9);
+vec_F=zeros(9,1);
+for i = 1:N
+    Q(i,:)= kron(p1(:,i),p2(:,i));  
+end
+
+[U,S,V]=svd(Q);
+vec_F=V(:,end);
+F_=reshape(vec_F,3,3);
+[Uf,Sf,Vf]=svd(F_);
+Sf(3,3)=0;
+F=Uf*Sf*Vf';
+
