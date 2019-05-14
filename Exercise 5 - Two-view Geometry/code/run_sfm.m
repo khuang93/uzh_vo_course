@@ -2,12 +2,12 @@ clear all;
 close all;
 clc;
 
-addpath('8point/');
-addpath('triangulation/');
-addpath('plot/');
+addpath('8point');
+addpath('triangulation');
+addpath('plot');
 
-img = imread('../data/0001.jpg');
-img_2 = imread('../data/0002.jpg');
+img = imread('data\\0001.jpg');
+img_2 = imread('data\\0002.jpg');
 
 K = [1379.74 0 760.35
     0 1382.08 503.41
@@ -15,8 +15,8 @@ K = [1379.74 0 760.35
 
 %% Load outlier-free point correspondences
 
-p1 = load('../data/matches0001.txt');
-p2 = load('../data/matches0002.txt');
+p1 = load('data\\matches0001.txt');
+p2 = load('data\\matches0002.txt');
 
 p1 = [p1;ones(1,length(p1))];
 p2 = [p2;ones(1,length(p2))];
