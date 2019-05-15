@@ -20,13 +20,13 @@ function [R,T] = disambiguateRelativePose(Rots,u3,p1,p2,K1,K2)
 %   to camera 1.
 %
 R1=Rots(:,:,1);
-R2=Rots(:,:,1);
-M1=[eye(3) zeros(3,1)];
+R2=Rots(:,:,2);
+M1=K1*[eye(3) zeros(3,1)];
 M2_all=zeros(3,4,4);
-M2_1=[R1 u3];
-M2_2=[R2 u3];
-M2_3=[R1 -u3];
-M2_4=[R2 -u3];
+M2_1=K2*[R1 u3];
+M2_2=K2*[R2 u3];
+M2_3=K2*[R1 -u3];
+M2_4=K2*[R2 -u3];
 M2_all(:,:,1)=M2_1;
 M2_all(:,:,2)=M2_2;
 M2_all(:,:,3)=M2_3;
@@ -42,8 +42,9 @@ count=zeros(4,1);
 count(1)=sum(P1(3,:)>0);
 count(2)=sum(P2(3,:)>0);
 count(3)=sum(P3(3,:)>0);
-count(4)=sum(P1(3,:)>0);
+count(4)=sum(P4(3,:)>0);
 [~,idx]=max(count);
-R=M2_all(:,1:3,idx);
-T=M2_all(:,4,idx);
+RT_idx=K2\M2_all(:,:,idx);
+R=RT_idx(:,1:3);
+T=RT_idx(:,4);
 end
